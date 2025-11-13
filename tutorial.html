@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Group M - Tutorial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Tutorial-specific styles */
+        .tutorial-page {
+            padding: 120px 0 60px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+        
+        .page-header p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .tutorial-nav {
+            margin-bottom: 40px;
+        }
+        
+        .tutorial-toc {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .tutorial-toc li {
+            margin-bottom: 10px;
+        }
+        
+        .tutorial-toc a {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background-color: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .tutorial-toc a:hover {
+            background-color: rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .tutorial-section {
+            margin-bottom: 40px;
+            scroll-margin-top: 100px;
+        }
+        
+        .tutorial-section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 25px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .alert-success {
+            background-color: rgba(34, 197, 94, 0.1);
+            border-left-color: #22c55e;
+            color: var(--text-light);
+        }
+        
+        .tutorial-section h3 {
+            font-size: 1.25rem;
+            margin: 25px 0 15px;
+            color: var(--text-light);
+        }
+        
+        .tutorial-section ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .tutorial-section li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+        
+        .tutorial-section p {
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+        
+        .code-block {
+            background-color: #0d1117;
+            border-radius: 8px;
+            padding: 0;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .code-header {
+            background-color: #161b22;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .code-title {
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+        
+        .code-block pre {
+            color: #e6edf3;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .comment { color: #8b949e; }
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+        .number { color: #79c0ff; }
+        
+        .video-wrapper {
+            margin: 25px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+        
+        .tutorial-video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .tutorial-footer {
+            margin-top: 60px;
+            text-align: center;
+        }
+        
+        .tutorial-footer ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .tutorial-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        }
+        
+        .tutorial-footer a:hover {
+            gap: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .tutorial-toc {
+                grid-template-columns: 1fr;
+            }
+            
+            .tutorial-footer ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    MCP <span>Group M</span>
+                </div>
+                <div class="nav-links">
+            <a href="index.html">Welcome</a>
+                    <a href="presentation.html">Presentation</a>
+                    <a href="#" class="active">Tutorial</a>
+                    <a href="codeExplanation.html">Code Explanation</a>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Tutorial Page Content -->
+    <div class="tutorial-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 style="color: #6366f1;">🎓 Build a Task Manager with MCP</h1>
+                <p>
+                    Learn how to create a complete MCP-enabled application from scratch.
+                    This tutorial will take approximately 60 minutes to complete.
+                </p>
+            </div>
+
+            <div class="tutorial-nav card">
+                <h3>📋 Tutorial Contents</h3>
+                <ul class="tutorial-toc">
+                    <li><a href="#prerequisites">1. Prerequisites & Setup</a></li>
+                    <li><a href="#mcp-server">2. Create MCP Server</a></li>
+                    <li><a href="#test-server">3. Test with Claude Desktop</a></li>
+                    <li><a href="#react-frontend">4. Build React Frontend</a></li>
+                    <li><a href="#integration">5. Connect Frontend to MCP</a></li>
+                    <li><a href="#deployment">6. Testing & Deployment</a></li>
+                </ul>
+            </div>
+
+            <!-- Prerequisites Section -->
+            <div id="prerequisites" class="card tutorial-section">
+                <h2><span class="step-number">1</span>Prerequisites & Setup</h2>
+                
+                <div class="alert alert-info">
+                    <strong>⏱️ Time Required:</strong> 10 minutes<br/>
+                    <strong>💡 What You'll Learn:</strong> Environment setup and dependencies
+                </div>
+
+                <h3>What You'll Need</h3>
+                <ul>
+                    <li>Node.js (v18 or higher) installed</li>
+                    <li>Basic knowledge of JavaScript/React</li>
+                    <li>A code editor (VS Code recommended)</li>
+                    <li>Claude Desktop app (optional, for testing)</li>
+                </ul>
+
+                <h3>Create Project Structure</h3>
+                <p>First, let's create our project folders:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Terminal</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Create main project directory</span>
+mkdir mcp-task-manager
+cd mcp-task-manager
+
+<span class="comment"># Create server and client directories</span>
+mkdir mcp-server
+mkdir react-client
+
+<span class="comment"># Navigate to server directory</span>
+cd mcp-server</code></pre>
+                </div>
+
+                <h3>Initialize MCP Server</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Terminal (in mcp-server directory)</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Initialize Node.js project</span>
+npm init -y
+
+<span class="comment"># Install MCP SDK and dependencies</span>
+npm install @modelcontextprotocol/sdk</code></pre>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ Checkpoint:</strong> You should now have both directories created with
+                    the MCP SDK installed in the server folder.
+                </div>
+            </div>
+
+            <!-- Video Tutorial 1: Getting Started -->
+            <div class="card tutorial-section">
+                <h2>🎥 Video Tutorial 1: Getting Started with MCP</h2>
+                <p>Watch this introductory video to understand the basics of MCP and see the setup process in action.</p>
+                <div class="video-wrapper">
+                    <video controls class="tutorial-video">
+                        <source src="/videos/tutorial-1.mp4" type="video/mp4" />
+                        <source src="/videos/tutorial-1.webm" type="video/webm" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- MCP Server Section -->
+            <div id="mcp-server" class="card tutorial-section">
+                <h2><span class="step-number">2</span>Create MCP Server</h2>
+                
+                <div class="alert alert-info">
+                    <strong>⏱️ Time Required:</strong> 15 minutes<br/>
+                    <strong>💡 What You'll Learn:</strong> Building a basic MCP server
+                </div>
+
+                <h3>Create Server File</h3>
+                <p>Create an <code>index.js</code> file in your mcp-server directory with the following structure:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">mcp-server/index.js</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="keyword">import</span> { Server } <span class="keyword">from</span> <span class="string">'@modelcontextprotocol/sdk/server/index.js'</span>;
+<span class="keyword">import</span> { StdioServerTransport } <span class="keyword">from</span> <span class="string">'@modelcontextprotocol/sdk/server/stdio.js'</span>;
+
+<span class="comment">// Initialize the MCP server</span>
+<span class="keyword">const</span> server = <span class="keyword">new</span> <span class="function">Server</span>(
+  {
+    <span class="keyword">name</span>: <span class="string">'task-manager-server'</span>,
+    <span class="keyword">version</span>: <span class="string">'1.0.0'</span>,
+  },
+  {
+    <span class="keyword">capabilities</span>: {
+      <span class="keyword">tools</span>: {},
+    },
+  }
+);
+
+<span class="comment">// Start the server</span>
+<span class="keyword">const</span> transport = <span class="keyword">new</span> <span class="function">StdioServerTransport</span>();
+<span class="keyword">await</span> server.<span class="function">connect</span>(transport);
+
+<span class="function">console</span>.<span class="function">log</span>(<span class="string">'Task Manager MCP Server running'</span>);</code></pre>
+                </div>
+            </div>
+
+            <!-- Video Tutorial 2: Building the Server -->
+            <div class="card tutorial-section">
+                <h2>🎥 Video Tutorial 2: Building Your MCP Server</h2>
+                <p>This video demonstrates how to implement the core functionality of your MCP server step by step.</p>
+                <div class="video-wrapper">
+                    <video controls class="tutorial-video">
+                        <source src="/videos/tutorial-2.mp4" type="video/mp4" />
+                        <source src="/videos/tutorial-2.webm" type="video/webm" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- Testing Section -->
+            <div id="test-server" class="card tutorial-section">
+                <h2><span class="step-number">3</span>Test with Claude Desktop</h2>
+                
+                <div class="alert alert-info">
+                    <strong>⏱️ Time Required:</strong> 10 minutes<br/>
+                    <strong>💡 What You'll Learn:</strong> Testing your server with Claude Desktop
+                </div>
+
+                <h3>Configure Claude Desktop</h3>
+                <p>Add your server to Claude Desktop's configuration file:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">claude_desktop_config.json</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>{
+  <span class="string">"mcpServers"</span>: {
+    <span class="string">"task-manager"</span>: {
+      <span class="string">"command"</span>: <span class="string">"node"</span>,
+      <span class="string">"args"</span>: [<span class="string">"/path/to/your/mcp-server/index.js"</span>]
+    }
+  }
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- React Frontend Section -->
+            <div id="react-frontend" class="card tutorial-section">
+                <h2><span class="step-number">4</span>Build React Frontend</h2>
+                
+                <div class="alert alert-info">
+                    <strong>⏱️ Time Required:</strong> 15 minutes<br/>
+                    <strong>💡 What You'll Learn:</strong> Creating a user interface for your MCP server
+                </div>
+
+                <h3>Initialize React Project</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Terminal (in react-client directory)</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Navigate to client directory</span>
+cd ../react-client
+
+<span class="comment"># Create React app with Vite</span>
+npm create vite@latest . -- --template react
+
+<span class="comment"># Install dependencies</span>
+npm install</code></pre>
+                </div>
+            </div>
+
+            <!-- Integration Section -->
+            <div id="integration" class="card tutorial-section">
+                <h2><span class="step-number">5</span>Connect Frontend to MCP</h2>
+                
+                <div class="alert alert-info">
+                    <strong>⏱️ Time Required:</strong> 10 minutes<br/>
+                    <strong>💡 What You'll Learn:</strong> Connecting React frontend to MCP server
+                </div>
+
+                <h3>Create API Client</h3>
+                <p>Create a service to communicate with your MCP server:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">react-client/src/services/mcpClient.js</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="keyword">class</span> MCPClient {
+  <span class="function">constructor</span>() {
+    <span class="keyword">this</span>.<span class="keyword">baseUrl</span> = <span class="string">'http://localhost:3001'</span>;
+  }
+
+  <span class="keyword">async</span> <span class="function">getTasks</span>() {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">`<span class="keyword">${this.baseUrl}</span>/api/tasks`</span>);
+    <span class="keyword">return</span> <span class="keyword">await</span> response.<span class="function">json</span>();
+  }
+
+  <span class="keyword">async</span> <span class="function">addTask</span>(task) {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">`<span class="keyword">${this.baseUrl}</span>/api/tasks`</span>, {
+      <span class="keyword">method</span>: <span class="string">'POST'</span>,
+      <span class="keyword">headers</span>: {
+        <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,
+      },
+      <span class="keyword">body</span>: <span class="function">JSON</span>.<span class="function">stringify</span>(task),
+    });
+    <span class="keyword">return</span> <span class="keyword">await</span> response.<span class="function">json</span>();
+  }
+}
+
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="function">MCPClient</span>();</code></pre>
+                </div>
+            </div>
+
+            <!-- Deployment Section -->
+            <div id="deployment" class="card tutorial-section">
+                <h2><span class="step-number">6</span>Testing & Deployment</h2>
+                
+                <div class="alert alert-info">
+                    <strong>⏱️ Time Required:</strong> 10 minutes<br/>
+                    <strong>💡 What You'll Learn:</strong> Testing your application and deployment options
+                </div>
+
+                <h3>Test Your Application</h3>
+                <p>Start both your MCP server and React frontend:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Terminal (in mcp-server directory)</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Start MCP server</span>
+node index.js</code></pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Terminal (in react-client directory)</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Start React development server</span>
+npm run dev</code></pre>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>🎉 Congratulations!</strong> Your MCP Task Manager is now running! 
+                    Visit <code>http://localhost:5173</code> to see your application in action.
+                </div>
+            </div>
+
+            <div class="tutorial-footer card">
+                <h3>📚 Additional Resources</h3>
+                <ul>
+                    <li>
+                        <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">
+                            <i class="fas fa-external-link-alt"></i> Official MCP Documentation
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i> MCP GitHub Repository
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://react.dev" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-react"></i> React Documentation
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MCP Group M</h3>
+                    <p>COMP10020 Internet Technologies</p>
+                    <p>Model Context Protocol (MCP)</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="presentation.html">Presentation</a></li>
+                        <li><a href="tutorial.html">Tutorial</a></li>
+                        <!-- <li><a href="#">Documentation</a></li> -->
+                        <li><a href="code-explanation.html">Code Explanation</a></li>
+                        <li><a href="#">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 MCP Group M. All rights reserved. COMP10020 Internet Technologies</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.nav-links').classList.remove('active');
+                }
+            });
+        });
+
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const code = codeBlock.querySelector('pre').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#22c55e';
+                button.style.color = 'white';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Highlight active section in TOC
+        const sections = document.querySelectorAll('.tutorial-section');
+        const navLinks = document.querySelectorAll('.tutorial-toc a');
+
+        function highlightActiveSection() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveSection);
+    </script>
+</body>
+</html>

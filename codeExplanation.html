@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Group M - Code Explanation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Code Explanation specific styles */
+        .code-explanation-page {
+            padding: 120px 0 60px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+        
+        .page-header p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .code-explanation-page .card {
+            margin-bottom: 40px;
+        }
+        
+        .code-explanation-page .card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+        
+        .code-explanation-page .card h3 {
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            color: var(--text-light);
+        }
+        
+        .code-explanation-page .card h4 {
+            font-size: 1.1rem;
+            margin: 20px 0 10px;
+            color: var(--text-light);
+        }
+        
+        .code-explanation-page .card p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        /* Architecture Grid */
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .arch-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .arch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .arch-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+        
+        .arch-card p {
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        /* Code Block Styles */
+        .code-block {
+            background-color: #0d1117;
+            border-radius: 8px;
+            padding: 0;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .code-header {
+            background-color: #161b22;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .code-title {
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+        
+        .code-block pre {
+            color: #e6edf3;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .comment { color: #8b949e; }
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+        .number { color: #79c0ff; }
+        .property { color: #79c0ff; }
+        
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .flow-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .flow-step h4 {
+            margin: 0 0 5px 0;
+            color: var(--text-light);
+        }
+        
+        .flow-step p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .flow-arrow {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        /* Best Practices */
+        .best-practice {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .best-practice h4 {
+            margin: 0 0 10px 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .best-practice p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+        
+        .best-practice code {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .flow-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .code-explanation-page .card h2 {
+                font-size: 1.5rem;
+            }
+            
+            .code-explanation-page .card h3 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    MCP <span>Group M</span>
+                </div>
+                <div class="nav-links">
+                   <a href="index.html">Welcome</a>
+                    <a href="presentation.html">Presentation</a>
+                    <a href="tutorial.html">Tutorial</a>
+                    <a href="#" class="active">Code Explanation</a>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Code Explanation Page Content -->
+    <div class="code-explanation-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 style="color: #6366f1;">🔍 Code Deep Dive</h1>
+                <p>Detailed explanation of MCP server implementation</p>
+            </div>
+
+            <div class="card">
+                <h2>MCP Server Architecture</h2>
+                <p>
+                    Our MCP server follows a modular architecture with three main components:
+                </p>
+                
+                <div class="architecture-grid">
+                    <div class="arch-card">
+                        <h3>1. Server Instance</h3>
+                        <p>
+                            The core Server class from the MCP SDK handles connection management,
+                            request routing, and capability negotiation with clients.
+                        </p>
+                    </div>
+                    
+                    <div class="arch-card">
+                        <h3>2. Request Handlers</h3>
+                        <p>
+                            Request handlers process specific JSON-RPC 2.0 requests for resources,
+                            tools, prompts, and other MCP primitives.
+                        </p>
+                    </div>
+                    
+                    <div class="arch-card">
+                        <h3>3. Transport Layer</h3>
+                        <p>
+                            StdioServerTransport enables communication via standard input/output,
+                            perfect for local development and AI client integration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Key Code Patterns</h2>
+                
+                <h3>1. Server Initialization</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Creating the MCP Server</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="keyword">const</span> server = <span class="keyword">new</span> <span class="function">Server</span>(
+  {
+    <span class="property">name</span>: <span class="string">"task-manager-server"</span>,
+    <span class="property">version</span>: <span class="string">"1.0.0"</span>,
+  },
+  {
+    <span class="property">capabilities</span>: {
+      <span class="property">resources</span>: {},  <span class="comment">// Expose data/files</span>
+      <span class="property">tools</span>: {},      <span class="comment">// Expose actions</span>
+    },
+  }
+);</code></pre>
+                </div>
+                <p>
+                    The server instance declares its capabilities upfront, allowing clients to
+                    discover what the server can do.
+                </p>
+
+                <h3>2. Exposing Resources</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Resource Pattern</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>server.<span class="function">setRequestHandler</span>(ListResourcesRequestSchema, <span class="keyword">async</span> () => {
+  <span class="keyword">return</span> {
+    <span class="property">resources</span>: [
+      {
+        <span class="property">uri</span>: <span class="string">"tasks://all"</span>,
+        <span class="property">mimeType</span>: <span class="string">"application/json"</span>,
+        <span class="property">name</span>: <span class="string">"All Tasks"</span>,
+        <span class="property">description</span>: <span class="string">"List of all tasks"</span>,
+      },
+    ],
+  };
+});</code></pre>
+                </div>
+                <p>
+                    Resources use URI schemes to identify different data sources. Clients can
+                    list and read these resources dynamically.
+                </p>
+
+                <h3>3. Tool Execution</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Tool Pattern</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>server.<span class="function">setRequestHandler</span>(CallToolRequestSchema, <span class="keyword">async</span> (request) => {
+  <span class="keyword">const</span> { <span class="property">name</span>, <span class="property">arguments</span>: args } = request.<span class="property">params</span>;
+  
+  <span class="keyword">switch</span> (name) {
+    <span class="keyword">case</span> <span class="string">"create_task"</span>:
+      <span class="comment">// Execute tool logic</span>
+      <span class="keyword">return</span> { <span class="property">content</span>: [{ <span class="property">type</span>: <span class="string">"text"</span>, <span class="property">text</span>: <span class="string">"Success!"</span> }] };
+  }
+});</code></pre>
+                </div>
+                <p>
+                    Tools provide callable functions with JSON Schema validation. The server
+                    executes the requested action and returns structured results.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Data Flow Diagram</h2>
+                
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div>
+                            <h4>Client Request</h4>
+                            <p>AI client sends JSON-RPC request</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div>
+                            <h4>Transport Layer</h4>
+                            <p>STDIO/HTTP receives and parses</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div>
+                            <h4>Request Handler</h4>
+                            <p>Server routes to appropriate handler</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div>
+                            <h4>Business Logic</h4>
+                            <p>Execute tool or fetch resource</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div>
+                            <h4>Response</h4>
+                            <p>Return structured JSON-RPC response</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Best Practices</h2>
+                
+                <div class="best-practice">
+                    <h4><i class="fas fa-check-circle" style="color: #22c55e;"></i> Use Descriptive URIs</h4>
+                    <p>
+                        Resource URIs should be self-explanatory: <code>tasks://active</code>
+                        is better than <code>tasks://1</code>
+                    </p>
+                </div>
+                
+                <div class="best-practice">
+                    <h4><i class="fas fa-check-circle" style="color: #22c55e;"></i> Validate Tool Arguments</h4>
+                    <p>
+                        Always define JSON Schema for tool inputs to ensure type safety and
+                        provide clear documentation.
+                    </p>
+                </div>
+                
+                <div class="best-practice">
+                    <h4><i class="fas fa-check-circle" style="color: #22c55e;"></i> Handle Errors Gracefully</h4>
+                    <p>
+                        Return meaningful error messages that help clients understand what went
+                        wrong and how to fix it.
+                    </p>
+                </div>
+                
+                <div class="best-practice">
+                    <h4><i class="fas fa-check-circle" style="color: #22c55e;"></i> Keep State Manageable</h4>
+                    <p>
+                        For production servers, use persistent storage (databases) instead of
+                        in-memory state.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MCP Group M</h3>
+                    <p>COMP10020 Internet Technologies</p>
+                    <p>Model Context Protocol (MCP)</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="presentation.html">Presentation</a></li>
+                        <li><a href="tutorial.html">Tutorial</a></li>
+                        <li><a href="code-explanation.html">Code Explanation</a></li>
+                        <li><a href="#">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 MCP Group M. All rights reserved. COMP10020 Internet Technologies</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const code = codeBlock.querySelector('pre').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#22c55e';
+                button.style.color = 'white';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
